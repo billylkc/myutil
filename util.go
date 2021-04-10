@@ -55,6 +55,9 @@ func BreakLongStr(s string, lineLen, totalLen int) string {
 
 // trim long string
 func TrimStr(s string, n int) string {
+	if n == 0 {
+		return s
+	}
 	if len(s) >= n {
 		s = s[0:n] + "..."
 	}
@@ -308,4 +311,13 @@ func HandleCamalCase(src string) string {
 	results = strings.Join(entries, " ")
 	results = strings.ReplaceAll(results, "  ", " ")
 	return results
+}
+
+// BreakLongParagraph break lines in the paragraphs
+func BreakLongParagraph(p string, lineLen, totalLen int) string {
+	ss := strings.Split(p, "\n")
+	for i, _ := range ss {
+		ss[i] = BreakLongStr(ss[i], lineLen, totalLen)
+	}
+	return strings.Join(ss, "\n")
 }
