@@ -1,4 +1,4 @@
-module github.com/billylkc/myutil.git
+module github.com/billylkc/myutil
 
 go 1.16
 
