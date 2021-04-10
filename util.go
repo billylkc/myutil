@@ -317,7 +317,8 @@ func HandleCamalCase(src string) string {
 func BreakLongParagraph(p string, lineLen, totalLen int) string {
 	ss := strings.Split(p, "\n")
 	for i, _ := range ss {
-		ss[i] = BreakLongStr(ss[i], lineLen, totalLen)
+		s := strings.TrimSpace(ss[i])
+		ss[i] = BreakLongStr(s, lineLen, totalLen)
 	}
 	return strings.Join(ss, "\n")
 }
