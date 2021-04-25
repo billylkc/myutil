@@ -16,13 +16,23 @@ func TestParseDateRange(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "2 previous days",
+			name: "same days",
 			args: args{
 				s:        "2021-04-19",
-				nrecords: 2,
+				nrecords: 1,
 				freq:     "d",
 			},
-			want:  "2021-04-18",
+			want:  "2021-04-19",
+			want1: "2021-04-19",
+		},
+		{
+			name: "3 previous days",
+			args: args{
+				s:        "2021-04-19",
+				nrecords: 3,
+				freq:     "d",
+			},
+			want:  "2021-04-17",
 			want1: "2021-04-19",
 		},
 		{

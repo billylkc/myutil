@@ -61,7 +61,11 @@ func ParseDateRange(s string, nrecords int, freq string) (string, string, error)
 
 	switch freq {
 	case "d": // Daily
-		start = t.AddDate(0, 0, -n).Format("2006-01-02")
+		if nrecords == 1 {
+			start = t.Format("2006-01-02")
+		} else {
+			start = t.AddDate(0, 0, -n).Format("2006-01-02")
+		}
 
 	case "w": // Weekly
 		tS = tconfig.With(t).BeginningOfWeek()
