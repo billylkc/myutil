@@ -46,6 +46,26 @@ func TestParseDateRange(t *testing.T) {
 			want1: "2021-04-25",
 		},
 		{
+			name: "This week",
+			args: args{
+				s:        "2021-04-25",
+				nrecords: 1,
+				freq:     "w",
+			},
+			want:  "2021-04-19",
+			want1: "2021-04-25",
+		},
+		{
+			name: "This week",
+			args: args{
+				s:        "2021-04-25",
+				nrecords: 0,
+				freq:     "w",
+			},
+			want:  "2021-04-19",
+			want1: "2021-04-25",
+		},
+		{
 			name: "same month - April",
 			args: args{
 				s:        "2021-04-19",
