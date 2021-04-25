@@ -1,6 +1,8 @@
 package myutil
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParseDateRange(t *testing.T) {
 	type args struct {
@@ -118,6 +120,40 @@ func TestParseDateRange(t *testing.T) {
 			}
 			if got1 != tt.want1 {
 				t.Errorf("ParseDateRange() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}
+
+func TestParseDateInput(t *testing.T) {
+	type args struct {
+		s    string
+		freq string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr bool
+	}{
+		// {
+		// 	name: "Simple test",
+		// 	args: args{
+		// 		s:    "1",
+		// 		freq: "w",
+		// 	},
+		// 	want: "2021-04-25",
+		// },
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ParseDateInput(tt.args.s, tt.args.freq)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseDateInput() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("ParseDateInput() = %v, want %v", got, tt.want)
 			}
 		})
 	}

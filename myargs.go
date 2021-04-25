@@ -95,7 +95,7 @@ func ParseDateRange(s string, nrecords int, freq string) (string, string, error)
 }
 
 // ParseDateInput parse the input for past n days, or actual day string in YYYY-MM-DD format
-// result depends on freq, daily, monthly -> 2021-03-01, weekly -> start from monday
+// result depends on freq, daily, monthly -> 2021-03-01
 func ParseDateInput(s, freq string) (string, error) {
 	var (
 		t     time.Time
@@ -123,12 +123,17 @@ func ParseDateInput(s, freq string) (string, error) {
 		if err != nil {
 			return dateF, fmt.Errorf("Invalid input for date. Need a date in YYYY-MM-DD format or number for past n days/weeks/months")
 		}
+
 		switch freq {
 		case "d": // Daily
 			t = time.Now().AddDate(0, 0, -n)
 
 		case "w": // Weekly
-			t = time.Now().AddDate(0, 0, -n*7+6)
+			if n <= 1 {
+				t = time.Now()
+			} else {
+				t = time.Now().AddDate(0, 0, -n*7+7)
+			}
 
 		case "m": //Monthly
 			t = time.Now().AddDate(0, -n, 0)
@@ -144,7 +149,6 @@ func ParseDateInput(s, freq string) (string, error) {
 		dateF = t.Format("2006-01-02")
 
 	case "w": // Weekly.
-		t := tconfig.With(t).BeginningOfWeek()
 		dateF = tconfig.With(t).Format("2006-01-02")
 
 	case "m": // Monthly
