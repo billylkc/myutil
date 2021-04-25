@@ -27,6 +27,65 @@ func HandleDateArgs(date *string, nrecords *int, defaultN int, args ...string) e
 	return nil
 }
 
+// ParseDateRange TBA
+func ParseDateRange(s string, nrecords int, freq string) (string, string, error) {
+	var (
+		n     int
+		err   error
+		t     time.Time // input date in date format
+		tS    time.Time // start in date format
+		tE    time.Time // end date in date format
+		start string
+		end   string
+	)
+
+	t, err = now.Parse(s)
+	if err != nil {
+		fmt.Println(err.Error())
+		return "", "", err
+	}
+	n = nrecords - 1
+	if n <= 0 {
+		n = 1
+	}
+
+	// Set config
+	location, _ := time.LoadLocation("Asia/Shanghai")
+	tconfig := &now.Config{
+		WeekStartDay: time.Monday,
+		TimeLocation: location,
+		TimeFormats:  []string{"2006-01-02"},
+	}
+
+	end = t.Format("2006-01-02")
+
+	switch freq {
+	case "d": // Daily
+		start = t.AddDate(0, 0, -n).Format("2006-01-02")
+
+	case "w": // Weekly
+		tS = tconfig.With(t).BeginningOfWeek()
+		tS = tS.AddDate(0, 0, -n*7)
+		tE = tconfig.With(t).EndOfWeek()
+		start = tS.Format("2006-01-02")
+		end = tE.Format("2006-01-02")
+
+	case "m": //Monthly
+		tS = now.With(t).BeginningOfMonth()
+		tE = now.With(t).EndOfMonth()
+		end = tE.Format("2006-01-02")
+		if nrecords == 1 {
+			start = tS.Format("2006-01-02")
+		} else {
+			start = tS.AddDate(0, -n, 0).Format("2006-01-02")
+		}
+
+	default:
+		t = time.Now()
+	}
+	return start, end, nil
+}
+
 // ParseDateInput parse the input for past n days, or actual day string in YYYY-MM-DD format
 // result depends on freq, daily, monthly -> 2021-03-01, weekly -> start from monday
 func ParseDateInput(s, freq string) (string, error) {
