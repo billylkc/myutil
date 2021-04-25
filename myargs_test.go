@@ -2,6 +2,7 @@ package myutil
 
 import (
 	"testing"
+	"time"
 )
 
 func TestParseDateRange(t *testing.T) {
@@ -136,14 +137,30 @@ func TestParseDateInput(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		// {
-		// 	name: "Simple test",
-		// 	args: args{
-		// 		s:    "1",
-		// 		freq: "w",
-		// 	},
-		// 	want: "2021-04-25",
-		// },
+		{
+			name: "zero week",
+			args: args{
+				s:    "0",
+				freq: "w",
+			},
+			want: time.Now().Format("2006-01-02"),
+		},
+		{
+			name: "one week",
+			args: args{
+				s:    "1",
+				freq: "w",
+			},
+			want: time.Now().AddDate(0, 0, -7).Format("2006-01-02"),
+		},
+		{
+			name: "two weeks",
+			args: args{
+				s:    "2",
+				freq: "w",
+			},
+			want: time.Now().AddDate(0, 0, -2*7).Format("2006-01-02"),
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

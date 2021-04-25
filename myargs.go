@@ -129,11 +129,7 @@ func ParseDateInput(s, freq string) (string, error) {
 			t = time.Now().AddDate(0, 0, -n)
 
 		case "w": // Weekly
-			if n <= 1 {
-				t = time.Now()
-			} else {
-				t = time.Now().AddDate(0, 0, -n*7+7)
-			}
+			t = time.Now().AddDate(0, 0, -n*7)
 
 		case "m": //Monthly
 			t = time.Now().AddDate(0, -n, 0)
