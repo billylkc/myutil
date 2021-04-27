@@ -11,6 +11,11 @@ import (
 
 // HandleMonthArgs handles months related arguments
 func HandleMonthArgs(s string) (string, error) {
+
+	if s == "" {
+		return "", nil
+	}
+
 	m := map[string]int{ // mapping for month
 		"JAN": 1,
 		"FEB": 2,
