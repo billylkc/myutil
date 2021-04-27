@@ -3,10 +3,52 @@ package myutil
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/jinzhu/now"
 )
+
+// HandleMonthArgs handles months related arguments
+func HandleMonthArgs(s string) (string, error) {
+	m := map[string]int{ // mapping for month
+		"JAN": 1,
+		"FEB": 2,
+		"MAR": 3,
+		"APR": 4,
+		"MAY": 5,
+		"JUN": 6,
+		"JUL": 7,
+		"AUG": 8,
+		"SEP": 9,
+		"OCT": 10,
+		"NOV": 11,
+		"DEV": 12,
+	}
+
+	var (
+		res   string // result in yyyy-mm-dd format
+		month int
+	)
+
+	t := time.Now()
+	s = strings.ToUpper(s)
+	if val, ok := m[s]; ok { // by string, e.g. jan
+		month = val
+		year := t.Year()
+		res = fmt.Sprintf("%d-%02d-01", year, month)
+
+	} else { // Past n month
+		n, err := strconv.Atoi(s)
+		if err != nil {
+			return "", fmt.Errorf("Cant parse month. Should be somthing like 1 (last month) or JAN. \n")
+		}
+		t = now.With(t).BeginningOfMonth()
+		t = t.AddDate(0, -n, 0)
+		res = t.Format("2006-01-02")
+	}
+	return res, nil
+}
 
 // HandleDateArgs handles non flag input arguments
 // mostly handle nrecords only, where n could be days, weeks, or months

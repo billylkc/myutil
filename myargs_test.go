@@ -3,6 +3,8 @@ package myutil
 import (
 	"testing"
 	"time"
+
+	"github.com/jinzhu/now"
 )
 
 func TestParseDateRange(t *testing.T) {
@@ -171,6 +173,45 @@ func TestParseDateInput(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("ParseDateInput() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestHandleMonthArgs(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr bool
+	}{
+		{
+			name: "January",
+			args: args{
+				s: "JAN",
+			},
+			want: now.BeginningOfYear().Format("2006-01-02"),
+		},
+		{
+			name: "This month",
+			args: args{
+				s: "0",
+			},
+			want: now.BeginningOfMonth().Format("2006-01-02"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := HandleMonthArgs(tt.args.s)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("HandleMonthArgs() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("HandleMonthArgs() = %v, want %v", got, tt.want)
 			}
 		})
 	}
