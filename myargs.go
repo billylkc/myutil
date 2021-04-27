@@ -28,7 +28,7 @@ func HandleMonthArgs(s string) (string, error) {
 		"SEP": 9,
 		"OCT": 10,
 		"NOV": 11,
-		"DEV": 12,
+		"DEC": 12,
 	}
 
 	var (
